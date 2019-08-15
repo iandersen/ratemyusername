@@ -5,14 +5,35 @@
   #results{
     margin: 0 auto;
     td,th{
-      padding: 5px;
+      padding: 25px;
     }
     th{
       font-weight: bold;
+      background-color: #222;
     }
   }
   table,tr,td,th{
     border: 1px solid #aaaaaa;
     border-collapse: collapse;
+  }
+  p{
+    font-size: 18px;
+    padding: 20px;
+    margin: 10px 8%;
+  }
+  #email{
+    margin-bottom: 10px;
+    height: 60px;
+    border: 0;
+    padding-left: 10px;
+    border-radius: 10px;
+    font-size: 1.5em;
+  }
+  .btn-primary.disabled, .btn-primary:disabled{
+    opacity: 1;
+    background-color: #aaa;
+    border-color: #333;
+    color: #888;
+    cursor: not-allowed;
   }
 }

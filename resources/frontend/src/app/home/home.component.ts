@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit {
   }
 
   getUsernamesSearched(){
-    this.httpClient.get('http://localhost:8000/rest/usernamesSearched').subscribe((res: number)=>{
+    this.httpClient.get('/rest/usernamesSearched').subscribe((res: number)=>{
       this.usernamesSearched = res;
     });
   }
@@ -45,8 +45,10 @@ export class HomeComponent implements OnInit {
   validate(){
     this.canSubmit = true;
     this.usernames.controls.forEach((input)=>{
-        if(input.value && (input.value.length < 3 || input.value.length > 32))
+      input.setValue(input.value.replace(/[^a-zA-Z0-9_.]/, ''));
+        if(input.value.length < 3 || input.value.length > 32) {
           this.canSubmit = false;
+        }
     });
   }
 
@@ -54,12 +56,18 @@ export class HomeComponent implements OnInit {
     return index;
   }
 
+  removeLast(){
+    this.usernames = this.usernameForm.get('usernames') as FormArray;
+    this.usernames.removeAt(this.usernames.length-1);
+    this.validate();
+  }
+
   submit(){
     const usernames = this.usernames.controls.map((input)=>{
       return input.value;
     });
     console.log(usernames);
-    this.httpClient.post('http://localhost:8000/rest/evaluateUsernames', {
+    this.httpClient.post('/rest/evaluateUsernames', {
       usernames
     }).subscribe((response: any)=>{
       if(response.data) {

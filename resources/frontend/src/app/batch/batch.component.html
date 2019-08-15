@@ -13,9 +13,9 @@
   <div [hidden]="batch.is_processed">
     <p>The usernames will be evaluated approximately every 15 minutes. If you would like to be notified when the process
     is complete, just enter your email address below, and you will receive an automated email when everything is ready.</p>
-    <input id="email" type="email" name="email" (input)="validateEmail($event.target.value)" [hidden]="!!batch.email">
+    <input placeholder="email@example.com" id="email" type="email" name="email" (input)="validateEmail($event.target.value)" [hidden]="!!batch.email">
     <br/>
-    <button (click)="submitEmail()" [hidden]="batch.email || !emailValid" class="btn btn-primary">Notify Me!</button>
+    <button (click)="submitEmail()" [hidden]="batch.email" [disabled]="batch.email || !emailValid" class="btn btn-primary">Notify Me!</button>
     <p id="emailText" [hidden]="!batch.email">Thanks for entering your email address! You will receive a notification once
     we have processed the information.</p>
   </div>

@@ -2,20 +2,22 @@
   <div class="jumbotron">
     <h1>Enter Up To 10 Usernames</h1>
     <div id="searchContainer" [formGroup]="usernameForm">
-      <div formArrayName="usernames">
-        <input *ngFor="let username of usernameForm.get('usernames').value; let i = index; trackBy:trackByFn"
-               (input)="validate()"
-               [formControlName]="i" autocapitalize="off" autocorrect="off" class="form-control usernameField"
-               data-val-maxlength="The field Account must be a string or array type with a maximum length of '32'."
-               data-val-maxlength-max="32" id="searchField-{{i}}" maxlength="32" placeholder="username"
-               spellcheck="false" type="text">
+      <div formArrayName="usernames" class="usernameContainer">
+        <div class="inputContainer clearfix" *ngFor="let username of usernameForm.get('usernames').value; let i = index; trackBy:trackByFn">
+          <input (input)="validate()"
+                 [formControlName]="i" autocapitalize="off" autocorrect="off" [class]="'usernameField ' + (i === usernames.length -1 && i > 0 ? 'usernameWithRemove' : '')"
+                 data-val-maxlength="The field Account must be a string or array type with a maximum length of '32'."
+                 data-val-maxlength-max="32" id="searchField-{{i}}" maxlength="32" placeholder="cool_username123"
+                 spellcheck="false" type="text">
+          <button (click)="removeLast()" [hidden]="i === 0 || i < usernames.length - 1" class="btn btn-danger removeButton">Remove</button>
+        </div>
       </div>
       <div id="addButtonContainer">
-        <button class="btn btn-secondary" (click)="addUsername()" [hidden]="usernames.length === 10">Compare Another
-          Username (Up to 10)
+        <button class="btn btn-default" (click)="addUsername()" [hidden]="usernames.length === 10">+1 ({{usernames.length}}/10)
         </button>
       </div>
       <button class="btn btn-primary" (click)="submit()" [disabled]="!canSubmit">Rate My Username!!!</button>
+      <p id="cantSubmit" [hidden]="canSubmit">Make sure all your usernames are valid!</p>
     </div>
     <div id="statsBar">
       Usernames Searched: {{usernamesSearched}}

@@ -41,7 +41,7 @@ export class BatchComponent implements OnInit {
   }
 
   submitEmail(){
-    this.httpClient.post(`http://localhost:8000/rest/batch/${this.id}/setEmail`, {
+    this.httpClient.post(`/rest/batch/${this.id}/setEmail`, {
       email: this.email
     }).subscribe((response: any)=>{
       if(response.data) {

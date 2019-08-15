@@ -18,7 +18,7 @@ export class BatchService {
       console.log('Got: ', this.batches[id]);
       return this.batches[id];
     } else {
-      const batch = await this.httpClient.get<any>(`http://localhost:8000/rest/batch/${id}`).toPromise();
+      const batch = await this.httpClient.get<any>(`/rest/batch/${id}`).toPromise();
       console.log('We got the batch: ', batch);
       this.batches[id] = batch.data;
       return batch.data;
