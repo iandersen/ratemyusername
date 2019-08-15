@@ -1,0 +1,18 @@
+#batchComponent{
+  text-align: center;
+  color: #aaaaaa;
+  padding-top: 50px;
+  #results{
+    margin: 0 auto;
+    td,th{
+      padding: 5px;
+    }
+    th{
+      font-weight: bold;
+    }
+  }
+  table,tr,td,th{
+    border: 1px solid #aaaaaa;
+    border-collapse: collapse;
+  }
+}

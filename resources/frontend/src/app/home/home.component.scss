@@ -1,0 +1,26 @@
+#homeContainer{
+  .jumbotron{
+    background-color: rgb(196,100,58);
+    color: white;
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    #searchContainer{
+      background-color: rgb(153, 73, 46);
+      padding: 3%;
+      .usernameField{
+        margin: 10px;
+        border-radius: 20px;
+      }
+      #addButtonContainer{
+        text-align: left;
+      }
+    }
+    #statsBar{
+      background-color: rgb(153, 65, 47);
+      color: #1d2124;
+      font-size: 32px;
+      padding: 25px;
+    }
+  }
+}

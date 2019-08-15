@@ -1,0 +1,7 @@
+rm -f ../../public/*.js;
+rm -f ../../public/*.css;
+rm -f ../../public/*.ico;
+cp dist/frontend/*.js ../../public/;
+cp dist/frontend/*.css ../../public/;
+cp dist/frontend/*.ico ../../public/;
+cp dist/frontend/index.html ../views/index.html
