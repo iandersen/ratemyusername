@@ -9,7 +9,7 @@
                  data-val-maxlength="The field Account must be a string or array type with a maximum length of '32'."
                  data-val-maxlength-max="32" id="searchField-{{i}}" maxlength="32" placeholder="cool_username123"
                  spellcheck="false" type="text">
-          <button (click)="removeLast()" [hidden]="i === 0 || i < usernames.length - 1" class="btn btn-danger removeButton">Remove</button>
+          <button (click)="removeLast()" [hidden]="i === 0 || i < usernames.length - 1" class="btn btn-danger removeButton">X</button>
         </div>
       </div>
       <div id="addButtonContainer">
@@ -21,6 +21,7 @@
     </div>
     <div id="statsBar">
       Usernames Searched: {{usernamesSearched}}
+      <a class="githubLink" target="_blank" href="https://github.com/iandersen/ratemyusername">Check out the source code!</a>
     </div>
   </div>
 </div>

@@ -7,12 +7,16 @@ import { HomeComponent } from './home/home.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BatchComponent } from './batch/batch.component';
+import { FaqComponent } from './faq/faq.component';
+import { SearchComponent } from './search/search.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    BatchComponent
+    BatchComponent,
+    FaqComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,
