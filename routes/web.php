@@ -30,3 +30,8 @@ Route::middleware('cors')->get('/{slug}', function () {
     View::addExtension('html', 'php');
     return View::make('index');
 });
+
+Route::middleware('cors')->get('/{slug}/{slug2}', function () {
+    View::addExtension('html', 'php');
+    return View::make('index');
+});
