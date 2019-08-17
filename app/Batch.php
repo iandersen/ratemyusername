@@ -13,11 +13,7 @@ class Batch extends Model
         'is_processed' => 'boolean'
     ];
 
-    public function processed(){
-        return $this->hasMany(ProcessedName::class);
-    }
-
-    public function unprocessed(){
-        return $this->hasMany(UnprocessedName::class);
+    public function usernames(){
+        return $this->belongsToMany(Username::class, 'batch_usernames', 'batch_id', 'username_id');
     }
 }

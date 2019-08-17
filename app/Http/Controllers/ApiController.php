@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Batch;
-use App\ProcessedName;
-use App\UnprocessedName;
+use App\Username;
 use Illuminate\Http\Request;
 
 class ApiController extends Controller
@@ -13,7 +12,7 @@ class ApiController extends Controller
 
     public function usernamesSearched()
     {
-        return ProcessedName::count();
+        return Username::where('process_state', 'processed')->count();
     }
 
     public function evaluateUsernames(Request $request)
@@ -37,37 +36,24 @@ class ApiController extends Controller
                 'email' => null
             ];
             $namesToProcess = 0;
-            foreach ($validUsernames as $username) {
-                if (!ProcessedName::where('username', $username)->count()) {
-                    UnprocessedName::create([
-                        'username' => $username,
-                        'batch_id' => $batchID
-                    ]);
-                    $namesToProcess++;
-                    $ret['usernames'][] = [
-                        'username' => $username,
-                        'score' => null
-                    ];
-                } else if (ProcessedName::where('username', $username)->count()) {
-                    $score = ProcessedName::where('username', $username)->first()->score;
-                    ProcessedName::create([
-                        'username' => $username,
-                        'batch_id' => $batchID,
-                        'score' => $score
-                    ]);
-                    $ret['usernames'][] = [
-                        'username' => $username,
-                        'score' => ProcessedName::where('username', $username)->first()->score
-                    ];
+            foreach ($validUsernames as $value) {
+                $username = Username::where('value', $value)->first();
+                if ($username) {
+                    $username->batches()->attach($batchID);
                 } else {
-                    $ret['usernames'][] = [
-                        'username' => $username,
-                        'score' => null
-                    ];
+                    $namesToProcess++;
+                    $username = Username::create([
+                        'value' => $value
+                    ]);
+                    $username->batches()->attach($batchID);
                 }
+                $ret['usernames'][] = [
+                    'username' => $username->value,
+                    'score' => $username->score
+                ];
             }
             //We didn't get any new names, so mark the batch as processed
-            if($namesToProcess === 0){
+            if ($namesToProcess === 0) {
                 $batch->is_processed = true;
                 $batch->save();
             }
@@ -83,22 +69,23 @@ class ApiController extends Controller
         }
     }
 
-    public function setBatchEmail($id, Request $request){
+    public function setBatchEmail($id, Request $request)
+    {
         $batch = Batch::find($id);
-        if(!$batch){
+        if (!$batch) {
             return [
                 'error' => 'Batch not found',
                 'data' => null
             ];
         }
-        if($batch->email){
+        if ($batch->email) {
             return [
                 'error' => 'Batch already has an assigned email address',
                 'data' => null
             ];
         }
         $email = filter_var($request->get('email'), FILTER_VALIDATE_EMAIL);
-        if($email){
+        if ($email) {
             $batch->email = $email;
             $batch->save();
             return [
@@ -113,36 +100,29 @@ class ApiController extends Controller
         }
     }
 
-    public function getBatch($id){
+    public function getBatch($id)
+    {
         $batch = Batch::find($id);
-        if(!$batch){
+        if (!$batch) {
             return [
                 'error' => 'Batch not found',
                 'data' => null
             ];
         }
-        $processed = $batch->processed;
-        $unprocessed = $batch->unprocessed;
-        $usernames = [];
+        $usernames = $batch->usernames;
         $ret = [
-            'usernames' => $usernames,
+            'usernames' => [],
             'is_processed' => $batch->is_processed,
             'id' => $batch->id,
             'email' => $batch->email
         ];
-        foreach($processed as $username){
-            $usernames[] = [
-                'username' => $username->username,
-                'score' => $username->score
+        foreach ($usernames as $username) {
+            $ret['usernames'][] = [
+                'username' => $username->value,
+                'score' => $username->score,
+                'process_state' => $username->process_state
             ];
         }
-        foreach($unprocessed as $username){
-            $usernames[] = [
-                'username' => $username->username,
-                'score' => null
-            ];
-        }
-        $ret['usernames'] = $usernames;
         return [
             'data' => $ret,
             'error' => null
